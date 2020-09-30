@@ -21,6 +21,30 @@
 // // Make sure to also list the category in the opening string in all caps 
 // // The dynamically chosen random category below is Animals
 // // Copy the format
+const fetch = require('node-fetch');
+const url = 'https://api.publicapis.org/entries';
+
+fetch(url)
+.then((data) => data.json())
+.then((newData) => {
+    const random = Math.floor(Math.random() * newData.count);
+    const randomEntry = newData.entries[random];
+    const result = newData.entries.filter((entry) => entry.Category === randomEntry.Category);
+    const listedCat = result.forEach(({API, Description, Link, Category}) => {
+        let title = Category.toUpperCase()
+        console.log(`
+        Your random category is ${title}
+        
+        API: ${API}
+        Description: ${Description}
+        Link: ${Link}
+        Category: ${Category}
+        `)
+    })
+})
+.catch((err) => console.log(err));
+
+
 // EXAMPLE OUTPUT: 
 
 // You random category is ANIMALS:
